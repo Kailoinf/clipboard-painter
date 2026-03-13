@@ -12,9 +12,9 @@ import yaml
 
 import pyperclip
 
-from classifier import ClipboardClassifier
-from sanitizer import ClipboardSanitizer
-from logger import logger
+from src.classifier import ClipboardClassifier
+from src.sanitizer import ClipboardSanitizer
+from src.logger import logger
 
 
 class ClipboardDaemon:

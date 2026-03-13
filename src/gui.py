@@ -9,7 +9,7 @@ from pathlib import Path
 from datetime import datetime
 import yaml
 
-from logger import logger
+from src.logger import logger
 
 
 class ClipboardGUI:
