@@ -69,7 +69,8 @@ class ClipboardSanitizer:
         detected = []
 
         for rule in self.rules:
-            if re.search(rule['pattern'], result):
+            # 先扫描，避免不必要的替换
+            if re.search(rule['pattern'], content):
                 result = re.sub(rule['pattern'], rule['replacement'], result)
                 detected.append(rule['name'])
 

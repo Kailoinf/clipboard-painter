@@ -39,6 +39,11 @@ class ClipboardDaemon:
         self.lock = threading.Lock()
         self.db_lock = threading.Lock()
 
+        # 批处理优化：积累多条记录后批量写入
+        self._batch_buffer = []
+        self._batch_size = 10  # 每10条记录批量写入一次
+        self._batch_timer = 5  # 或最多5秒后强制写入
+
         self._init_db()
 
     @contextmanager
@@ -123,21 +128,36 @@ class ClipboardDaemon:
             conn.commit()
             logger.info(f"删除了 {deleted} 条记录以保持在限制范围内")
 
-    def _save_clipboard(self, content: str, content_type: str, keywords: str, has_sensitive: bool):
-        """保存剪贴板内容到数据库"""
+    def _flush_batch(self):
+        """刷新批处理缓冲区，批量写入数据库"""
+        if not self._batch_buffer:
+            return
+
         with self._get_db_connection() as conn:
             cursor = conn.cursor()
 
-            cursor.execute("""
+            # 批量插入
+            cursor.executemany("""
                 INSERT INTO clipboard_history (content, content_type, keywords, has_sensitive)
                 VALUES (?, ?, ?, ?)
-            """, (content, content_type, keywords, int(has_sensitive)))
+            """, self._batch_buffer)
 
             conn.commit()
+            logger.info(f"批量写入 {len(self._batch_buffer)} 条记录")
 
             # 执行清理任务
             self._auto_clean_old_records(conn, cursor)
             self._limit_history_size(conn, cursor)
+
+        self._batch_buffer.clear()
+
+    def _save_clipboard(self, content: str, content_type: str, keywords: str, has_sensitive: bool):
+        """保存剪贴板内容到批处理缓冲区"""
+        self._batch_buffer.append((content, content_type, keywords, int(has_sensitive)))
+
+        # 达到批量大小立即写入
+        if len(self._batch_buffer) >= self._batch_size:
+            self._flush_batch()
 
     def _process_clipboard(self, content: str):
         """处理剪贴板内容"""
@@ -187,6 +207,7 @@ class ClipboardDaemon:
     def stop(self):
         """停止守护进程"""
         self.running = False
+        self._flush_batch()  # 确保缓冲区中的数据写入
         logger.info("🛑 Clipboard Painter 已停止")
 
 
