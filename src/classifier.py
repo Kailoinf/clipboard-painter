@@ -56,7 +56,10 @@ class ClipboardClassifier:
         Returns:
             内容类型
         """
-        if not content or not content.strip():
+        if content is None:
+            return "unknown"
+
+        if not content.strip():
             return "unknown"
 
         content = content.strip()

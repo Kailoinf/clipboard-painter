@@ -39,6 +39,7 @@ data/*.db-wal
 
 # 日志
 *.log
+logs/
 
 # 系统
 .DS_Store

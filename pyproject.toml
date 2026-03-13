@@ -1,6 +1,6 @@
 [project]
 name = "clipboard-painter"
-version = "0.1.0"
+version = "0.2.0"
 description = "让剪贴板变聪明"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -12,6 +12,7 @@ dependencies = [
 
 [project.scripts]
 clipboard-daemon = "src.clipboard_daemon:main"
+clipboard-gui = "src.gui:main"
 
 [build-system]
 requires = ["hatchling"]
