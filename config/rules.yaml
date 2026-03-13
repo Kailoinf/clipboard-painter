@@ -1,0 +1,42 @@
+# 自定义分类规则
+
+# 排除关键词（复制这些内容时不记录）
+exclude_keywords:
+  - "password"
+  - "密码"
+  - "token"
+  - "密钥"
+
+# 自定义URL域名白名单（自动标记特定类型域名）
+url_domains:
+  github.com: "代码仓库"
+  stackoverflow.com: "技术问答"
+  youtube.com: "视频"
+  bilibili.com: "视频"
+  juejin.cn: "技术文章"
+  csdn.net: "技术文章"
+
+# 自定义代码标记
+code_extensions:
+  - ".py"
+  - ".js"
+  - ".java"
+  - ".go"
+  - ".rs"
+  - ".sql"
+  - ".sh"
+  - ".json"
+  - ".xml"
+  - ".yaml"
+  - ".yml"
+
+# 数据库配置
+database:
+  path: "data/clipboard.db"
+  max_history: 10000  # 最大保存历史记录数
+  auto_clean_days: 30  # 自动清理N天前的记录
+
+# 快捷键配置
+hotkeys:
+  search: "Ctrl+Shift+V"
+  quick_save: "Ctrl+Alt+S"
