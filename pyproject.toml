@@ -1,0 +1,29 @@
+[project]
+name = "clipboard-painter"
+version = "0.1.0"
+description = "让剪贴板变聪明"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyperclip>=1.8.2",
+    "pillow>=10.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+clipboard-daemon = "src.clipboard_daemon:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []

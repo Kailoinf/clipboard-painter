@@ -17,14 +17,20 @@ Clipboard Painter帮你自动分类、智能提取、一键清理。
 ## 🚀 快速开始
 
 ```bash
+# 安装 uv（如果没有安装）
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
 # 克隆仓库
 git clone git@github.com:Kailoinf/clipboard-painter.git
 cd clipboard-painter
 
-# 安装依赖
-pip install -r requirements.txt
+# 安装依赖（uv 会自动创建虚拟环境）
+uv sync
 
 # 启动剪贴板监听
+uv run python src/clipboard_daemon.py
+
+# 或直接运行（如果已激活虚拟环境）
 python src/clipboard_daemon.py
 
 # 按 Ctrl+Shift+V 唤起搜索界面
@@ -55,6 +61,7 @@ clipboard-painter/
 ## 🛠️ 技术栈
 
 - Python 3.10+
+- uv（现代 Python 包管理器）
 - SQLite
 - Tkinter（GUI）
 - Pyperclip（剪贴板操作）
